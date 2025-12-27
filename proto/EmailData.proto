@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package sendlix.api.v1;
+
+ // Email address information
+message EmailData {
+    string email = 1;
+    optional string name = 2;
+}

@@ -1,0 +1,49 @@
+﻿syntax = "proto3";
+
+package sendlix.api.v1;
+
+import "EmailData.proto";
+
+service Group {
+	rpc InsertEmailToGroup(InsertEmailToGroupRequest) returns (UpdateResponse) {}
+	rpc RemoveEmailFromGroup(RemoveEmailFromGroupRequest) returns (UpdateResponse) {}
+	rpc CheckEmailInGroup(CheckEmailInGroupRequest) returns (CheckEmailInGroupResponse) {}
+}
+
+enum FailureHandler {
+	SKIP = 0;
+	ABORT = 1;
+}
+
+message InsertEmailToGroupRequest {
+	repeated GroupEntry entries = 1;
+ 	string groupId = 2;
+	FailureHandler onFailure = 3;
+}
+
+message GroupEntry {
+	EmailData email = 1;
+	map<string, string> substitutions = 2;
+}
+
+message RemoveEmailFromGroupRequest {
+	string email = 1;
+	string groupId = 2;
+}
+
+message UpdateResponse {
+	bool success = 1;
+	string message = 2;
+	int64 affectedRows = 3;
+}
+
+
+message CheckEmailInGroupRequest {
+	string email = 1;
+	string groupId = 2;
+}
+
+message CheckEmailInGroupResponse {
+	bool exists = 1;
+}
+
